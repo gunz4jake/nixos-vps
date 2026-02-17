@@ -14,10 +14,6 @@
     ];
   };
 
-  networking.firewall = {
-    trustedInterfaces = [ "tailscale0" ];
-  };
-
   services.fail2ban = {
     enable = true;
     bantime = "24h";
