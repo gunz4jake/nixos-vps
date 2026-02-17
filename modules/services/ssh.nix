@@ -23,6 +23,4 @@
     bantime = "24h";
     maxretry = 5;
   };
-
-  system.stateVersion = "25.11"; 
 }
