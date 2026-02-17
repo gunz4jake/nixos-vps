@@ -7,7 +7,7 @@
     settings = {
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
-      PermitRootLogin = "yes";
+      PermitRootLogin = "no";
     };
     listenAddresses = [
       { addr = "100.76.38.93"; port = 22; }
