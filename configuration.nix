@@ -71,6 +71,7 @@
     git
     wget
     htop
+    tmux
   ];
 
   networking.firewall.enable = true;
