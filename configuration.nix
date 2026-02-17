@@ -43,7 +43,6 @@
 
   networking.hostName = "nixos-vps"; # Define your hostname.
   networking.nameservers = [ "9.9.9.9" "149.112.112.112" ];
-  services.tailscale.enable = true;
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
@@ -84,7 +83,7 @@
   ];
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  # networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;

@@ -9,11 +9,13 @@
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "yes";
     };
-    listenAddresses = {
-      [  addr = "100.76.38.93";
-         port = 22;
-      ];
-    };
+    listenAddresses = [
+      { addr = "100.76.38.93"; port = 22; }
+    ];
+  };
+
+  networking.firewall = {
+    trustedInterfaces = [ "tailscale0" ];
   };
 
   services.fail2ban = {
