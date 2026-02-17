@@ -32,6 +32,11 @@
         };
       };
 
+      media_retention = {
+        local_media_lifetime = "90d";
+        remote_media_lifetime = "30d";
+        unused_expiration_time = "1d";
+      };
       # Tell Matrix clients to use your new Coturn server
       turn_uris = [
         "turn:matrix.ningen.xyz:3478?transport=udp"
