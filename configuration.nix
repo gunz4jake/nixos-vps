@@ -11,6 +11,7 @@
       ./modules/services/ssh.nix
       ./modules/services/synapse.nix
       ./modules/services/uptime-kuma.nix
+      ./modules/services/tailscale.nix
     ];
 
   sops.defaultSopsFile = ./secrets.yaml;
