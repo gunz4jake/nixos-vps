@@ -6,6 +6,7 @@
       ./hardware-configuration.nix
 
       # Networking
+      ./modules/networking/dns.nix
       ./modules/networking/firewall.nix
       ./modules/networking/tailscale.nix
 
@@ -44,7 +45,6 @@
   boot.loader.grub.device = "/dev/vda"; # or "nodev" for efi only
 
   networking.hostName = "nixos-vps"; # Define your hostname.
-  networking.nameservers = [ "9.9.9.9" "149.112.112.112" ];
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
