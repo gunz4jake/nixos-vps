@@ -4,10 +4,20 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./modules/services/ssh.nix
+
+      # Networking
+      ./modules/networking/firewall.nix
+      ./modules/networking/tailscale.nix
+
+      # Security
+      ./modules/security/ssh.nix
+
+      # Web (shared nginx base + ACME)
+      ./modules/web/nginx.nix
+
+      # Services
       ./modules/services/synapse.nix
       ./modules/services/uptime-kuma.nix
-      ./modules/services/tailscale.nix
     ];
 
   sops.defaultSopsFile = ./secrets.yaml;

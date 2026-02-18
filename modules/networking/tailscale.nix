@@ -1,4 +1,4 @@
-# tailscale.nix
+# ./modules/networking/tailscale.nix
 { config, lib, pkgs, ... }:
 
 {
@@ -6,5 +6,5 @@
 
   networking.firewall = {
     trustedInterfaces = [ "tailscale0" ];
-  }; 
+  };
 }

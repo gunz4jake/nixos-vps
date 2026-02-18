@@ -20,7 +20,7 @@
     enable = true;
 
     settings = {
-      server_name = "ningen.xyz"; 
+      server_name = "ningen.xyz";
       public_baseurl = "https://matrix.ningen.xyz";
 
       database = {
@@ -37,13 +37,13 @@
         remote_media_lifetime = "30d";
         unused_expiration_time = "1d";
       };
-      # Tell Matrix clients to use your new Coturn server
+      # Tell Matrix clients to use your Coturn server
       turn_uris = [
         "turn:matrix.ningen.xyz:3478?transport=udp"
         "turn:matrix.ningen.xyz:3478?transport=tcp"
       ];
       # How long a client's TURN authorization lasts (1 day in milliseconds)
-      turn_user_lifetime = 86400000; 
+      turn_user_lifetime = 86400000;
 
       listeners = [
         {
@@ -76,7 +76,6 @@
     use-auth-secret = true;
     static-auth-secret-file = config.sops.secrets."turn_secret".path;
     realm = "matrix.ningen.xyz";
-    # Listen on standard STUN/TURN port
     listening-port = 3478;
   };
 
@@ -86,60 +85,37 @@
     group = "matrix-synapse";
   };
 
-  # Allow the turnserver user to read its specific secret
   sops.secrets."turn_secret" = {
     owner = "turnserver";
     group = "turnserver";
   };
 
-  # --- 5. Nginx Reverse Proxy & ACME ---
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "jacob@ningen.xyz";
-  };
+  # --- 5. Nginx Virtual Hosts ---
+  services.nginx.virtualHosts = {
+    "ningen.xyz" = {
+      enableACME = true;
+      forceSSL = true;
 
-  services.nginx = {
-    enable = true;
-    recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
+      locations."= /.well-known/matrix/server".extraConfig = ''
+        add_header Content-Type application/json;
+        add_header Access-Control-Allow-Origin *;
+        return 200 '{"m.server": "matrix.ningen.xyz:443"}';
+      '';
 
-    virtualHosts = {
-      "ningen.xyz" = {
-        enableACME = true;
-        forceSSL = true;
-
-        locations."= /.well-known/matrix/server".extraConfig = ''
-          add_header Content-Type application/json;
-          add_header Access-Control-Allow-Origin *;
-          return 200 '{"m.server": "matrix.ningen.xyz:443"}';
-        '';
-
-        locations."= /.well-known/matrix/client".extraConfig = ''
-          add_header Content-Type application/json;
-          add_header Access-Control-Allow-Origin *;
-          return 200 '{"m.homeserver": {"base_url": "https://matrix.ningen.xyz"}}';
-        '';
-      };
-
-      "matrix.ningen.xyz" = {
-        enableACME = true;
-        forceSSL = true;
-
-        # Proxies the root URL so you get the "It works!" page
-        locations."/".proxyPass = "http://[::1]:8008";
-        locations."/_matrix".proxyPass = "http://[::1]:8008";
-        locations."/_synapse/client".proxyPass = "http://[::1]:8008";
-      };
+      locations."= /.well-known/matrix/client".extraConfig = ''
+        add_header Content-Type application/json;
+        add_header Access-Control-Allow-Origin *;
+        return 200 '{"m.homeserver": {"base_url": "https://matrix.ningen.xyz"}}';
+      '';
     };
-  };
 
-  # --- 6. Firewall ---
-  networking.firewall = {
-    allowedTCPPorts = [ 80 443 3478 ];
-    allowedUDPPorts = [ 3478 ];
-    # Coturn uses a wide range of UDP ports to temporarily route media traffic
-    allowedUDPPortRanges = [ { from = 49152; to = 65535; } ];
+    "matrix.ningen.xyz" = {
+      enableACME = true;
+      forceSSL = true;
+
+      locations."/".proxyPass = "http://[::1]:8008";
+      locations."/_matrix".proxyPass = "http://[::1]:8008";
+      locations."/_synapse/client".proxyPass = "http://[::1]:8008";
+    };
   };
 }
