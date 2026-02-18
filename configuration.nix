@@ -28,17 +28,27 @@
   boot.kernel.sysctl = {
     "vm.swappiness" = 180;
     "vm.page-cluster" = 0;
+
+    # Reduce dirty page writeback pressure on VDS storage
+    "vm.dirty_ratio" = 15;
+    "vm.dirty_background_ratio" = 5;
+
+    # Network throughput tuning (beneficial for Matrix federation)
+    "net.core.somaxconn" = 1024;
+    "net.ipv4.tcp_fastopen" = 3;
+    "net.core.rmem_max" = 16777216;
+    "net.core.wmem_max" = 16777216;
   };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.gc = {
     automatic = true;
-    dates = "weekly";
+    dates = "Sun 03:00"; # Explicit time to avoid random I/O spikes
     options = "--delete-older-than 14d";
   };
   nix.optimise = {
     automatic = true;
-    dates = [ "06:00" ];
+    dates = [ "Sun 04:00" ]; # 1 hour after GC to avoid simultaneous I/O
   };
 
   boot.loader.grub.enable = true;

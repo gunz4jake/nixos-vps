@@ -9,6 +9,8 @@
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
+      MaxAuthTries = 3;
+      LoginGraceTime = 20;
     };
   };
 

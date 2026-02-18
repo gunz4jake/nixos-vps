@@ -15,5 +15,6 @@
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
+    recommendedBrotliSettings = true;
   };
 }

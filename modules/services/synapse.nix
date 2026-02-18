@@ -13,6 +13,19 @@
         ensureDBOwnership = true;
       }
     ];
+
+    settings = {
+      # Tuned for 8GB RAM VDS
+      shared_buffers = "2GB";           # ~25% of RAM
+      effective_cache_size = "5GB";     # ~60% of RAM
+      work_mem = "32MB";
+      maintenance_work_mem = "256MB";
+      max_connections = 100;
+      wal_buffers = "16MB";
+      checkpoint_completion_target = 0.9;
+      # virtio/SSD storage — default of 4.0 assumes spinning disk
+      random_page_cost = 1.1;
+    };
   };
 
   # --- 2. Synapse Service ---
