@@ -59,8 +59,19 @@
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
 
-  # zramswap
-  zramSwap.enable = true;
+  # zramswap - Priority 100 (higher than disk swap)
+  zramSwap = {
+    enable = true;
+    priority = 100;
+    algorithm = "zstd";
+  };
+
+  # Disk Swap - Fallback if ZRAM fills up
+  swapDevices = [ {
+    device = "/var/lib/swapfile";
+    size = 2048; # 2GB
+    priority = 0;
+  } ];
 
   # Set your time zone.
   time.timeZone = "UTC";
