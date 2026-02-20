@@ -6,6 +6,7 @@
   services.postgresql = {
     enable = true;
     initdbArgs = [ "--locale=C" "--encoding=UTF8" ];
+    package = pkgs.postgresql_17;
     ensureDatabases = [ "matrix-synapse" ];
     ensureUsers = [
       {
