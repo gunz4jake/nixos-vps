@@ -19,11 +19,14 @@
       # Services
       ./modules/services/synapse.nix
       ./modules/services/uptime-kuma.nix
+      ./modules/services/aiostreams.nix
+      ./modules/services/stremthru.nix
     ];
 
   sops.defaultSopsFile = ./secrets.yaml;
   sops.defaultSopsFormat = "yaml";
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  nixpkgs.config.allowUnfree = true;
 
   boot.kernel.sysctl = {
     "vm.swappiness" = 180;
@@ -103,6 +106,7 @@
     wget
     htop
     tmux
+    claude-code
   ];
 
   networking.firewall.enable = true;
