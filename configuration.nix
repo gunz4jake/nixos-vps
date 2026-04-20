@@ -19,9 +19,6 @@
       # Services
       ./modules/services/synapse.nix
       ./modules/services/uptime-kuma.nix
-      ./modules/services/aiostreams.nix
-      ./modules/services/stremthru.nix
-      ./modules/services/jellyfin.nix
     ];
 
   sops.defaultSopsFile = ./secrets.yaml;
